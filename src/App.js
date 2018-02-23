@@ -32,6 +32,10 @@ class App extends Component {
         this.handleSubmitPub = this.handleSubmitPub.bind(this);
     }
 
+    componentWillMount(){
+        this.getPoems()
+    }
+
     pushToDb(poem){
         poemsDb.add({
             poem
