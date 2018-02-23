@@ -1,0 +1,31 @@
+.App {
+  text-align: center;
+}
+
+.texts {
+    color: green;
+}
+
+@font-face {
+    font-family: consola;
+    src: url(https://fonts.googleapis.com/css?family=VT323);
+}
+
+Input {
+    margin: 6px;
+}
+
+Button {
+    margin: 6px;
+}
+
+.Inputs {
+    width: 50%;
+    margin: 0 auto;
+}
+
+ul {
+    list-style-type: none;
+    font-size: 32px;
+    padding: 0;
+}
