@@ -29,3 +29,9 @@ ul {
     font-size: 32px;
     padding: 0;
 }
+
+.Card {
+    width: 60%;
+    margin: 6px auto;
+    font-size: 18px;
+}

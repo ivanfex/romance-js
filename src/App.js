@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
-//import { Button, Input, InputGroup } from 'reactstrap';
+import { poemsDb }from './db/store';
 import { Button, InputGroup, InputGroupAddon, InputGroupText, Input } from 'reactstrap';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody,
+  CardTitle, CardSubtitle } from 'reactstrap';
+
 
 class App extends Component {
 
@@ -13,7 +16,8 @@ class App extends Component {
             line: [],
             dropdownOpen: false,
             wordCount: 0,
-            verseCount: 1
+            verseCount: 1,
+            gotPoems: []
         }
 
         this.handleOnChange = this.handleOnChange.bind(this);
@@ -23,6 +27,34 @@ class App extends Component {
         this.writeline = this.writeline.bind(this);
         this.toggle = this.toggle.bind(this);
         this.verseCounter = this.verseCounter.bind(this);
+        this.pushToDb = this.pushToDb.bind(this);
+        this.getPoems = this.getPoems.bind(this);
+        this.handleSubmitPub = this.handleSubmitPub.bind(this);
+    }
+
+    pushToDb(poem){
+        poemsDb.add({
+            poem
+        }).then(function(docRef) {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+            console.error("Error adding document: ", error);
+        });
+    }
+
+    getPoems(){
+        let that = this;
+        poemsDb.get().then(function(querySnapshot){
+            let gotPoems = [];
+            querySnapshot.forEach(function(data){
+                gotPoems.push(data.data().poem);
+            })
+            that.setState({
+                gotPoems
+            })
+            console.log(gotPoems);
+        })
     }
 
     handleOnChange(ev){
@@ -52,14 +84,25 @@ class App extends Component {
 
             for(let i = 0; i < this.state.verseCount; i++){
                 let lines = this.writeline(pairs, this.state.wordCount)
-                poem.push(lines)
+                if(i === 0){
+                    let toUp = lines[0].toUpperCase() + lines.slice(1);
+                    poem.push(toUp);
+                    continue;
+                }else
+                poem.push(lines);
             }
 
             this.setState({
                 line: poem
             })
-        }
 
+
+        }
+        this.getPoems();
+    }
+
+    handleSubmitPub(){
+        this.pushToDb(this.state.line);
     }
 
     generateWordPairs(corpus){
@@ -135,13 +178,23 @@ class App extends Component {
       let poem = this.state.line.map((lines, index) => {
           return <li key={index}>{lines}</li>
       })
+
+      let getPoem = this.state.gotPoems.map((poe, index) => {
+          return <Card key={index} className="Card">
+                    <CardBody>
+                      <CardText><ul>{poe.map((line, indexes) => <li key={indexes}>{line}</li>)}</ul></CardText>
+                    </CardBody>
+                  </Card>
+      })
     console.log(this.state.verseCount);
     return (
       <div className="App" >
+          <h1>Romance.js</h1>
         <InputGroup className="Inputs">
             <Input placeholder="corpus" name="corpus" onChange={ this.handleOnChange }></Input>
             <Input placeholder="word count" name="wordCount" onChange={ this.handleOnChange }></Input>
             <Button onClick={ this.handleSubmit }>Submit</Button>
+            <Button onClick={ this.handleSubmitPub }>Publish</Button>
         </InputGroup>
             <div>
             <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -157,6 +210,9 @@ class App extends Component {
                 </DropdownMenu>
             </ButtonDropdown>
             <ul>{poem}</ul>
+            <div>
+                <ul>{getPoem}</ul>
+            </div>
         </div>
       </div>
     );
