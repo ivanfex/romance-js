@@ -194,6 +194,7 @@ class App extends Component {
     return (
       <div className="App" >
           <h1>Romance.js</h1>
+          <p>Sample - It was twenty years ago today Sgt. Pepper taught the band to play Theyve been going in and out of style But theyre guaranteed to raise a smile So may I introduce to you The act youve known for all these years Sgt. Peppers Lonely Hearts Club Band Were Sgt. Peppers Lonely Hearts Club Band We hope you will enjoy the show Were Sgt. Peppers Lonely Hearts Club Band Sit back and let the evening go Sgt. Peppers lonely, Sgt. Peppers lonely Sgt. Peppers Lonely Hearts Club Band Its wonderful to be here Its certainly a thrill Youre such a lovely audience Wed like to take you home with us Wed love to take you home I dont really want to stop the show But I thought that you might like to know That the singers going to sing a song And he wants you all to sing along So let me introduce to you The one and only Billy Shears And Sgt. Peppers Lonely Hearts Club Band</p>
         <InputGroup className="Inputs">
             <Input placeholder="corpus" name="corpus" onChange={ this.handleOnChange }></Input>
             <Input placeholder="word count" name="wordCount" onChange={ this.handleOnChange }></Input>
